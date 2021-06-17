@@ -33,7 +33,7 @@ export default class BaseService {
 
         // 拼接前缀
         if (this.namespace) {
-            ns += '/' + this.namespace;
+            ns += '/admin/' + this.namespace;
         }
 
         // 处理http

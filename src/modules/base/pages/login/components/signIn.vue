@@ -13,7 +13,7 @@
 
       <el-form-item prop="verifyCode" label="验证码" class="captcha">
         <el-input type="text" v-model="SignData.verifyCode" auto-complete="off" placeholder="请输入验证码"
-                  tabindex="3" maxlength="4" @keypress.native="enterKeyUp"/>
+                  tabindex="3" maxlength="4" @keypress="enterKeyUp"/>
         <captcha class="value" :ref="setRefs('captcha')" v-model="SignData.captchaId"
                  @change="()=>{SignData.verifyCode = ''}"/>
       </el-form-item>
@@ -63,7 +63,11 @@ export default defineComponent({
       refs.value.SignForm.validate(async (valid: boolean) => {
         if (valid) {
           saving.value = true;
+          // 登录
           await store.dispatch('userSignIn', SignData);
+
+          // 用户信息
+          await store.dispatch('userInfo');
         }
       });
 
