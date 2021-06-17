@@ -1,5 +1,7 @@
 import AuthInterface from './authInterface';
+import CommonInterface from './commonInterface';
 
 export default {
-    authInterface: new AuthInterface()
+    authInterface: new AuthInterface(),
+    commonInterface: new CommonInterface()
 };

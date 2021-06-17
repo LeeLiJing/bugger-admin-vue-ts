@@ -44,10 +44,19 @@ const userStore = {
         // 用户登录
         userSignIn({ commit }: any, form: any): Promise<any> {
             return store.service.authInterface.userLogin(form)
-                .then((res) => {
-                    commit('SET_TOKEN', res);
+                .then((res: any) => {
+                    console.log(res);
+                    commit('SET_TOKEN', res.data);
                     return res;
                 });
+        },
+        // 用户信息
+        userInfo({ commit }: any): Promise<any> {
+            return store.service.commonInterface.userInfo().then((res: any) => {
+                console.log(res);
+                commit('SET_USERINFO', res.data);
+                return res;
+            });
         }
     }
 };
