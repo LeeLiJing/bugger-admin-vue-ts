@@ -28,6 +28,8 @@ import { defineComponent, reactive, ref } from 'vue';
 import Captcha from './captcha.vue';
 import { useRefs } from '@/core';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
 
 
 export default defineComponent({
@@ -36,6 +38,7 @@ export default defineComponent({
   setup: () => {
     const { refs, setRefs }: any = useRefs();
     const store = useStore();
+    const router = useRouter();
 
     const SignData = reactive({
       username: '',
@@ -68,6 +71,15 @@ export default defineComponent({
 
           // 用户信息
           await store.dispatch('userInfo');
+
+          // 权限菜单
+          const [ first ] = await store.dispatch('permMenu');
+
+          if (!first) {
+            ElMessage.error('该账号没有权限');
+          } else {
+            await router.push('/');
+          }
         }
       });
 
