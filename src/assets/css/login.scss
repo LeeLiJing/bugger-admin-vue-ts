@@ -14,108 +14,88 @@
   }
 
   .sign-container {
-    box-shadow: -15px 15px 15px rgba(0, 0, 0, 0.5);
     width: 500px;
-    height: 360px;
+    height: 500px;
     position: absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    background-color: rgba(53, 57, 74, .9);
+    background-color: #2f3447;
     border-radius: 5px;
     padding: 30px 50px;
-    color: #D3D7F7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
 
     .title {
-      height: 60px;
-      line-height: 60px;
+      height: 50px;
+      width: 100%;
+      margin: 0 auto;
+      color: #ccc;
       text-align: center;
-      font-size: 24px;
-      color: #D3D7F7;
-      user-select: none;
+      line-height: 50px;
     }
 
-    .fields {
-      margin-top: 10px;
+    .el-form {
+      width: 100%;
+      border-radius: 3px;
+      margin-top: 35px;
 
       .el-form-item {
-        height: 50px;
+        margin-bottom: 30px;
 
-        .el-form-item__content {
-          .icon {
-            display: inline-block;
-            height: 50px;
-            vertical-align: middle;
-            text-align: center;
-            width: 40px;
-            font-size: 20px;
-            line-height: 50px;
-          }
+        &__label {
+          color: #ccc;
+        }
 
-          .el-input {
-            width: calc(100% - 40px);
-            margin-top: 5px;
+        .el-form-item__label {
+          font-size: 18px
+        }
+      }
 
-            .el-input__inner {
-              background-color: transparent;
-              color: #4FA1D9;
-              font-size: 14px;
-              border-color: #D3D7F7;
+      .el-input {
+        .el-input__inner {
+          border: 0;
+          border-bottom: 1px solid #999;
+          padding: 0 5px;
+          border-radius: 0;
+          background-color: transparent;
+          color: #ccc;
+          transition: border-color .3s;
 
+          &:focus {
+            border-color: #fff;
+            color: #fff;
+
+            &:-webkit-autofill {
+              -webkit-text-fill-color: #fff !important;
+              -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+              transition: background-color 50000s ease-in-out 0s;
             }
-
-            &.last {
-              width: calc(100% - 140px);
-            }
           }
+        }
 
-          .el-form-item__error {
-            padding-top: 3px;
-            left: 43px;
-          }
+
+      }
+
+      .captcha {
+        position: relative;
+
+        .value {
+          position: absolute;
+          bottom: 10px;
+          right: 0;
         }
       }
     }
 
-    .disclaimer {
-      text-align: center;
-      font-size: 13px;
-      color: #D3D7F7;
+    .submit-btn {
       margin-top: 20px;
-      user-select: none;
+      border-radius: 30px;
+      padding: 15px 60px;
+      font-size: 18px;
+      color: #000;
     }
-
-    .SignBtn {
-      border-radius: 50px;
-      background-color: transparent;
-      padding: 10px 50px;
-      border: 2px solid #4FA1D9;
-      color: #4FA1D9;
-      text-transform: uppercase;
-      font-size: 14px;
-      transition-property: background, color;
-      transition-duration: .2s;
-      outline: none;
-      user-select: none;
-      display: block;
-      margin: 35px auto 0;
-
-      &:focus {
-        box-shadow: none;
-        outline: none;
-      }
-
-      &:hover {
-        color: #fff;
-        background-color: #4FA1D9;
-        cursor: pointer;
-        transition-property: background, color;
-        transition-duration: .2s;
-      }
-    }
-
   }
 
 }
