@@ -7,8 +7,17 @@
       <div class="page-layout__topbar">
         <top-bar/>
       </div>
-      <div v-if="app.conf.showProcess" class="page-layout__process">
+      <div v-if="app.conf.showProcess" class="page-layout__tagView">
         <tag-view/>
+      </div>
+      <div class="page-layout__container">
+        <div class="page-layout__view">
+          <router-view v-slot="{ Component }">
+            <keep-alive :include="caches">
+              <component :is="Component"/>
+            </keep-alive>
+          </router-view>
+        </div>
       </div>
     </div>
   </div>
@@ -34,7 +43,16 @@ export default defineComponent({
       store.commit('COLLAPSE_MENU', val);
     }
 
-    return { menuCollapse, collapseMenu, app };
+    // 缓存列表
+    const caches = computed(() => {
+      return store.getters.tagViewList
+          .filter((e: any) => e.keepAlive)
+          .map((e: any) => {
+            return e.value.substring(1, e.value.length).replace(/\//g, '-');
+          });
+    });
+
+    return { menuCollapse, collapseMenu, app, caches };
   }
 });
 </script>
@@ -64,7 +82,7 @@ export default defineComponent({
     margin-bottom: 10px;
   }
 
-  &__process {
+  &__tagView {
     margin-bottom: 10px;
     padding: 0 10px;
   }
