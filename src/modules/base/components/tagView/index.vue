@@ -11,9 +11,11 @@
            :ref="setRefs(`item-${index}`)"
            :class="{active :item.active}"
            :data-index="index"
+           @click="onTap(item, Number(index))"
+           @contextmenu.stop.prevent="openCM($event, item)"
       >
         <span>{{ item.label }}</span>
-        <i class="el-icon-close" v-if="index >0"></i>
+        <i class="el-icon-close" v-if="index >0" @mousedown="onDel(Number(index))"></i>
       </div>
     </div>
 
@@ -28,6 +30,8 @@ import { computed, defineComponent, reactive, watch } from 'vue';
 import { useRefs } from '@/core';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import { last } from '#/utils';
+import { ContextMenu } from 'cl-admin-crud-vue3';
 
 export default defineComponent({
   name: 'TagView',
@@ -43,13 +47,17 @@ export default defineComponent({
     });
 
     // 数据列表
-    const list = computed(() => store.getters.processList);
+    const list = computed(() => store.getters.tagViewList);
 
-    // 监听路由变化
-    watch(() => route.path, (val: any) => {
-      let $index = list.value.findIndex((e: any) => e.value === val) || 0;
-      adScroll($index);
-    });
+    // 跳转
+    const toPath = () => {
+      const active = list.value.find((e: any) => e.active);
+
+      if (!active) {
+        const next = last(list.value);
+        router.push(next ? next.value : '/');
+      }
+    };
 
     // 调整滚动位置
     const adScroll = (index: number) => {
@@ -67,10 +75,71 @@ export default defineComponent({
 
     // 左右移动
     const toScroll = (flag: boolean) => {
-
+      scrollTo(refs.value.scroller.scrollLeft + (flag ? -100 : 100));
     };
 
-    return { refs, setRefs, list, menu, toScroll, scrollTo, adScroll };
+    // 选择
+    const onTap = (item: any, index: number) => {
+      adScroll(index);
+      router.push(item.value);
+    };
+
+    // 删除
+    const onDel = (index: number) => {
+      store.commit('DEL_PROCESS', index);
+      toPath();
+    };
+
+    // 右键菜单
+    const openCM = (e: any, item: any) => {
+      ContextMenu.open(e, {
+        list: [
+          {
+            label: '关闭当前',
+            hidden: item.value !== route.path,
+            callback: (_: any, done: Function) => {
+              onDel(list.value.findIndex((e: any) => e.value == item.value));
+              done();
+              toPath();
+            }
+          },
+          {
+            label: '关闭其他',
+            callback: (_: any, done: Function) => {
+              store.commit(
+                  'SET_PROCESS',
+                  list.value.filter(
+                      (e: any) => e.value == item.value || e.value == '/'
+                  )
+              );
+              done();
+              toPath();
+            }
+          },
+          {
+            label: '关闭所有',
+            callback: (_: any, done: Function) => {
+              store.commit(
+                  'SET_PROCESS',
+                  list.value.filter((e: any) => e.value == '/')
+              );
+              done();
+              toPath();
+            }
+          }
+        ]
+      });
+    };
+
+    // 监听路由变化
+    watch(
+        () => route.path,
+        function (val) {
+          adScroll(list.value.findIndex((e: any) => e.value === val) || 0);
+        }
+    );
+
+    return { refs, setRefs, list, menu, toScroll, scrollTo, adScroll, onTap, toPath, onDel, openCM };
   }
 });
 </script>
