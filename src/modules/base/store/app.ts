@@ -47,3 +47,5 @@ const appStore = {
         }
     }
 };
+
+export default appStore;
