@@ -21,5 +21,8 @@ bootstrap(app)
     .catch((err: string) => {
         console.error('启动失败', err);
     });
+
+store.dispatch('appLoad');
+
 // @ts-ignore
 window.__app__ = app;
