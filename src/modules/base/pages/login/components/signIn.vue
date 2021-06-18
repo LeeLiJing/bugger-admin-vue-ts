@@ -82,7 +82,6 @@ export default defineComponent({
           }
         }
       });
-
     };
 
     return { refs, setRefs, SignData, SignRules, saving, handleLogin, enterKeyUp };
