@@ -1,5 +1,7 @@
-// 开发模式
 import store from 'store';
+import { MenuItem } from '@/modules/base/types';
+
+// 开发模式
 
 export const isDev: boolean = import.meta.env.MODE === 'development';
 
@@ -13,3 +15,6 @@ export const app: any = store.get('__app__') || {
         customMenu: false // 自定义菜单
     }
 };
+
+// 自定义菜单列表
+export const menuList: MenuItem[] = [];

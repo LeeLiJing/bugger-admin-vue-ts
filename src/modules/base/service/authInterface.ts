@@ -39,6 +39,19 @@ class AuthInterface extends BaseService {
             }
         });
     }
+
+    /**
+     * 刷新 token
+     * @param {string} token
+     */
+    refreshToken(token: string) {
+        return this.request({
+            url: '/refreshToken',
+            params: {
+                refreshToken: token
+            }
+        });
+    }
 }
 
 export default AuthInterface;
