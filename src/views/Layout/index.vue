@@ -7,6 +7,9 @@
       <div class="page-layout__topbar">
         <top-bar/>
       </div>
+      <div v-if="app.conf.showProcess" class="page-layout__process">
+        <tag-view/>
+      </div>
     </div>
   </div>
 </template>
@@ -23,12 +26,15 @@ export default defineComponent({
     //菜单是否折叠
     const menuCollapse = computed<boolean>(() => store.getters.menuCollapse);
 
+    // 应用信息
+    const app = computed<any>(() => store.getters.app);
+
     // 折叠菜单
     function collapseMenu(val: boolean) {
       store.commit('COLLAPSE_MENU', val);
     }
 
-    return { menuCollapse, collapseMenu };
+    return { menuCollapse, collapseMenu, app };
   }
 });
 </script>
