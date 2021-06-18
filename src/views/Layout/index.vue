@@ -27,9 +27,10 @@
 import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
 import { TopBar, SideBar } from './components';
+import TagView from '@/modules/base/components/tagView/index.vue';
 
 export default defineComponent({
-  components: { TopBar, SideBar },
+  components: { TagView, TopBar, SideBar },
   setup() {
     const store = useStore();
 
