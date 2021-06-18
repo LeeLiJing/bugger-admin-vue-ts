@@ -2,6 +2,7 @@
   <div class="page-layout" :class="{ collapse : menuCollapse }">
     <div class="page-layout__mask" @click="collapseMenu(true)"></div>
     <div class="page-layout__left">
+      <side-bar/>
     </div>
     <div class="page-layout__right">
       <div class="page-layout__topbar">
@@ -25,10 +26,10 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
-import { TopBar } from './components';
+import { TopBar, SideBar } from './components';
 
 export default defineComponent({
-  components: { TopBar },
+  components: { TopBar, SideBar },
   setup() {
     const store = useStore();
 
