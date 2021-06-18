@@ -75,61 +75,59 @@ const menuStore = {
         permMenu({ commit, state, getters }: any) {
             return new Promise((resolve, reject) => {
                 const next = (res: any) => {
-                    if (isArray(res.menus)) {
+                    if (!isArray(res.menus)) {
                         res.menus = [];
                     }
-
-                    if (isArray(res.perms)) {
+                    if (!isArray(res.perms)) {
                         res.perms = [];
                     }
-                    console.log(res);
-                    const routes = res.menus
-                        .filter((e: MenuItem) => e.type != 2)
-                        .map((e: MenuItem) => {
-                            return {
-                                id: e.id,
-                                parentId: e.parentId,
-                                path: revisePath(e.router || String(e.id)),
-                                viewPath: e.viewPath,
-                                type: e.type,
-                                name: e.name,
-                                icon: e.icon,
-                                orderNum: e.orderNum,
-                                isShow: isEmpty(e.isShow) ? true : e.isShow,
-                                meta: {
-                                    label: e.name,
-                                    keepAlive: e.keepAlive
-                                },
-                                children: []
-                            };
-                        });
+                    const routes = res.menus.filter((e: MenuItem) => e.type != 2).map((e: MenuItem) => {
+                        return {
+                            id: e.id,
+                            parentId: e.parentId,
+                            path: revisePath(e.router || String(e.id)),
+                            viewPath: e.viewPath,
+                            type: e.type,
+                            name: e.name,
+                            icon: e.icon,
+                            orderNum: e.orderNum,
+                            isShow: isEmpty(e.isShow) ? true : e.isShow,
+                            meta: {
+                                label: e.name,
+                                keepAlive: e.keepAlive
+                            },
+                            children: []
+                        };
+                    });
 
                     // 转成树形菜单
                     const menuGroup = deepTree(routes);
 
                     // 设置权限
                     commit('SET_PERMISSION', res.perms);
+
                     // 设置菜单组
                     commit('SET_MENU_GROUP', menuGroup);
+
                     // 设置视图路由
-                    commit('SET_VIEW_ROUTES', routes.filter((e: MenuItem) => e.type == 1));
+                    commit(
+                        'SET_VIEW_ROUTES',
+                        routes.filter((e: MenuItem) => e.type == 1)
+                    );
+                    
                     // 设置菜单
                     commit('SET_MENU_LIST', state.index);
+
                     resolve(menuGroup);
                 };
 
-                // 监测自定义菜单
+                // 检测自定义菜单
                 if (!getters.app.conf.customMenu) {
-                    store.service.commonInterface
-                        .permMenu()
+                    store.service.commonInterface.permMenu()
                         .then((res: any) => {
-                            const { data } = res;
-                            if (!isEmpty(data)) {
-                                next(data);
-                            }
+                            next(res.data);
                         })
                         .catch((err: string) => {
-                            console.log(err);
                             ElMessage.error('菜单加载异常');
                             console.error(err);
                             reject(err);
